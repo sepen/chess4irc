@@ -8,6 +8,13 @@ from threading import Thread
 
 class ChessClient(Thread):
 
+    irchess = None
+    debug = 0
+
+    def __init__(self, irchess):
+	self.irchess = irchess
+	Thread.__init__(self)
+
     def run(self):
 	pygame.init()
 

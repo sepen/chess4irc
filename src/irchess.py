@@ -16,8 +16,8 @@ class irchess:
 		host, port = 'irc.freenode.org', 6667
 		nick = username = 'irchess_bot'
 		channels = ['#irchess']
-		self.irc = IRCClient(host, port, nick, username, channels)
-		self.gui = ChessClient()
+		self.gui = ChessClient(self)
+		self.irc = IRCClient(self, host, port, nick, username, channels)
 		# start objects
 		self.gui.start() # gui
 		loop()           # irc

@@ -5,11 +5,13 @@ from socket import AF_INET, SOCK_STREAM
 
 class IRCClient(async_chat):
 
+    irchess = None
     debug = 0
     terminator = '\r\n'
 
-    def __init__(self, host, port, nickname, username, channels=None):
+    def __init__(self, irchess, host, port, nickname, username, channels=None):
         async_chat.__init__(self)
+        self.irchess = irchess
         self.host = host
         self.port = port
         self.nickname = nickname

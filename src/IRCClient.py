@@ -16,7 +16,10 @@ class IRCClient(async_chat):
         self.username = username
         self.channels = [] if (channels is None) else channels
         self.received_data = ''
-        self.print_debug('__init__: connecting to %(host)s:%(port)d' % {'host': host, 'port': port})
+        self.print_debug('__init__: connecting to %(host)s:%(port)d' % {
+	    'host': host,
+	    'port': port
+	})
         self.create_socket(AF_INET, SOCK_STREAM)
         self.connect((host, port))
 
@@ -63,8 +66,8 @@ class IRCClient(async_chat):
 	    if (cmd == '376'):
 		self._connection_made()
 
-	    #elif (token[1] == '433'): # :server.domain 433 * botijo :Nickname is already in use.   
-	    # TODO
+	    #elif (token[1] == '433'):
+	    # TODO :server.domain 433 * botijo :Nickname is already in use.
 	    
 	    elif (cmd == 'PRIVMSG'):
 		self.on_privmsg(src, dst, msg)
@@ -169,16 +172,3 @@ class IRCClient(async_chat):
 
     def print_debug(self, line = ""):
 	if (self.debug == 1): print "[DEBUG] " + str(line)
-
-
-##########
-## MAIN ##
-##########
-
-if __name__ == '__main__':
-    from asyncore import loop
-    host, port = 'irc.freenode.org', 6667
-    nick = username = 'irchess_bot'
-    channels = ['#irchess']
-    client = IRCClient(host, port, nick, username, channels)
-    loop()

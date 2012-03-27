@@ -15,6 +15,10 @@ class ChessClient(Thread):
 	self.irchess = irchess
 	Thread.__init__(self)
 
+    def close(self):
+	pygame.quit()
+	self._Thread__stop()
+
     def run(self):
 	pygame.init()
 
@@ -67,7 +71,9 @@ class ChessClient(Thread):
         while 1:
             clock.tick(30)
             for event in pygame.event.get():
-		if event.type == QUIT: return
+		if event.type == QUIT:
+		    self.irchess.close()
+		    return
 		elif event.type == KEYDOWN:
 		    if event.key == K_ESCAPE:
 			return
@@ -120,7 +126,9 @@ class ChessClient(Thread):
                                             res = chess.addMove(markPos,mousePos)
                                         if res:
                                             #print chess.getLastMove()
-                                            print chess.getLastTextMove(chess.SAN)
+					    msg = chess.getLastTextMove(chess.SAN)
+					    print msg
+					    self.irchess.irc.privmsg("#irchess", msg)
                                             board = chess.getBoard()
                                             turn = chess.getTurn()
                                             markPos[0] = -1

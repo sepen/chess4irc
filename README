@@ -1,0 +1,41 @@
+
+
+              chess4irc: Chess for IRC
+
+
+DESCRIPTION
+
+  Networking chess game written in PyGame which uses IRC protocol to
+  send/receive data
+
+
+REQUERIMENTS
+
+  PyGame (http://www.pygame.org)
+
+
+BUILD AND INSTALL
+
+  $ make
+  $ sudo make install
+  or
+  $ sudo make install DESTDIR=/path/to/dir
+
+
+USAGE
+
+  chess4irc <local_player> <remote_player> <white|black>
+
+
+EXAMPLES
+
+  Player 1:
+  $ python chess4irc.py c4i_player1 c4i_player2 white
+
+  Player 2:
+  $ python chess4irc.py c4i_player2 c4i_player1 black
+
+
+BUGS AND REPORTS
+
+  Please contact to me: Jose V Beneyto, <sepen@crux.nu>

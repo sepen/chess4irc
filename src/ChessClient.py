@@ -75,6 +75,11 @@ class ChessClient(Thread):
         gameResults = ["","WHITE WINS!","BLACK WINS!","STALEMATE",
 	"DRAW BY THE FIFTHY MOVES RULE","DRAW BY THE THREE REPETITION RULE"]
 
+	# wait until ready
+	while 1:
+	    clock.tick(30)
+	    if (self.irchess.ready == 1): break
+
         while 1:
             clock.tick(30)
 

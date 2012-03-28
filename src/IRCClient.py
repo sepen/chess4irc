@@ -68,6 +68,9 @@ class IRCClient(async_chat):
 	    if (cmd == '376'):
 		self._connection_made()
 
+	    elif (cmd == '366'):
+		self.irchess.ready = 1
+
 	    #elif (token[1] == '433'):
 	    # TODO :server.domain 433 * botijo :Nickname is already in use.
 	    

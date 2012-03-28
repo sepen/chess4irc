@@ -9,6 +9,7 @@ import sys
 class irchess:
 
     # self vars
+    ready = 0
     lplayer, rplayer = None, None
     # self objects
     irc, gui = None, None

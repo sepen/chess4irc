@@ -126,7 +126,7 @@ class ChessClient(Thread):
                     markPos[0] = -1
                     validMoves = []
 		    '''
-                if not chess.isGameOver():
+                if not chess.isGameOver() and self.selected_turn == turn:
 		    # local turn
 		    if event.type == MOUSEMOTION:
 			mx = event.pos[0]

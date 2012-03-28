@@ -150,7 +150,7 @@ class IRCClient(async_chat):
     def on_privmsg(self, src, dst, msg):
 	(nick, user, host) = self.split_netmask(src)
 	self.print_debug('on_privmsg: from=' + src + ' from_nick=' + nick + ' to=' + dst + ' msg=' + msg)
-	if (nick == "sepen"):
+	if (nick == self.irchess.rplayer):
 	    self.irchess.gui.remote_text_move = msg
         pass
 

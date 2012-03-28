@@ -10,11 +10,15 @@ class ChessClient(Thread):
 
     irchess = None
     debug = 0
-    selectedturn = 0 # WHITE pieces selected
+    selected_turn = 0 # 0=white, 1=black
     remote_text_move = ""
 
-    def __init__(self, irchess):
+    def __init__(self, irchess, wb):
 	self.irchess = irchess
+	if (wb == "white"):
+	    self.selected_turn = 0
+	else:
+	    self.selected_turn = 1
 	Thread.__init__(self)
 
     def close(self):
@@ -75,7 +79,7 @@ class ChessClient(Thread):
             clock.tick(30)
 
 	    # if remote turn and remote move is not empty
-	    if self.selectedturn != turn and self.remote_text_move != "":
+	    if self.selected_turn != turn and self.remote_text_move != "":
 		self.print_debug("remote move: " + self.remote_text_move)
 		res = chess.addTextMove(self.remote_text_move)
 		if res:

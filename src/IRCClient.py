@@ -5,13 +5,13 @@ from socket import AF_INET, SOCK_STREAM
 
 class IRCClient(async_chat):
 
-    irchess = None
+    chess4irc = None
     debug = 0
     terminator = '\r\n'
 
-    def __init__(self, irchess, host, port, nickname, username, channels=None):
+    def __init__(self, chess4irc, host, port, nickname, username, channels=None):
         async_chat.__init__(self)
-        self.irchess = irchess
+        self.chess4irc = chess4irc
         self.host = host
         self.port = port
         self.nickname = nickname
@@ -69,7 +69,7 @@ class IRCClient(async_chat):
 		self._connection_made()
 
 	    elif (cmd == '366'):
-		self.irchess.ready = 1
+		self.chess4irc.ready = 1
 
 	    #elif (token[1] == '433'):
 	    # TODO :server.domain 433 * botijo :Nickname is already in use.
@@ -153,8 +153,8 @@ class IRCClient(async_chat):
     def on_privmsg(self, src, dst, msg):
 	(nick, user, host) = self.split_netmask(src)
 	self.print_debug('on_privmsg: from=' + src + ' from_nick=' + nick + ' to=' + dst + ' msg=' + msg)
-	if (nick == self.irchess.rplayer):
-	    self.irchess.gui.remote_text_move = msg
+	if (nick == self.chess4irc.rplayer):
+	    self.chess4irc.gui.remote_text_move = msg
         pass
 
     def on_notice(self, src, dst, msg):

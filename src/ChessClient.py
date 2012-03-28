@@ -8,13 +8,13 @@ from threading import Thread
 
 class ChessClient(Thread):
 
-    irchess = None
+    chess4irc = None
     debug = 0
     selected_turn = 0 # 0=white, 1=black
     remote_text_move = ""
 
-    def __init__(self, irchess, wb):
-	self.irchess = irchess
+    def __init__(self, chess4irc, wb):
+	self.chess4irc = chess4irc
 	if (wb == "white"):
 	    self.selected_turn = 0
 	else:
@@ -34,7 +34,7 @@ class ChessClient(Thread):
 	turn = chess.getTurn()
 
         screen = pygame.display.set_mode((480, 480),1)
-        pygame.display.set_caption('irchess')
+        pygame.display.set_caption('chess4irc')
 
         # load all images
         pieces = [{},{}]
@@ -81,12 +81,12 @@ class ChessClient(Thread):
 	    clock.tick(30)
 
 	    # exit when player be ready
-	    if (self.irchess.ready == 1): break
+	    if (self.chess4irc.ready == 1): break
 
 	    # search for gui events
 	    for event in pygame.event.get():
 		if event.type == QUIT:
-		    self.irchess.close()
+		    self.chess4irc.close()
 		    return
 
 	    # show waiting screen
@@ -94,7 +94,7 @@ class ChessClient(Thread):
 	    font1 = pygame.font.Font(None, 40)
 	    font2 = pygame.font.Font(None, 20)
 	    # - render text
-	    text1 = font1.render('irchess', True, (255,255, 255), (0, 0, 0))
+	    text1 = font1.render('chess4irc', True, (255,255, 255), (0, 0, 0))
 	    text2 = font2.render(waiting_message, True, (122,122,122), (0,0,0))
 	    # - make rectangles
 	    rect1 = text1.get_rect()
@@ -129,7 +129,7 @@ class ChessClient(Thread):
 	    # search for gui events
             for event in pygame.event.get():
 		if event.type == QUIT:
-		    self.irchess.close()
+		    self.chess4irc.close()
 		    return
 		    '''
 		    elif event.type == KEYDOWN:
@@ -197,7 +197,7 @@ class ChessClient(Thread):
 					    #print chess.getLastMove()
 					    msg = chess.getLastTextMove(chess.SAN)
 					    self.print_debug("move: " + msg)
-					    self.irchess.irc.privmsg("#irchess", msg)
+					    self.chess4irc.irc.privmsg("#chess4irc", msg)
 					    board = chess.getBoard()
 					    turn = chess.getTurn()
 					    # moved
@@ -211,7 +211,7 @@ class ChessClient(Thread):
                 markPos[0] = -1
                 markPos[1] = -1
             else:
-                pygame.display.set_caption('irchess')
+                pygame.display.set_caption('chess4irc')
 
             y = 0
             for rank in board:

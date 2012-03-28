@@ -36,7 +36,6 @@ def printUsage():
     sys.exit()
 
 if __name__ == "__main__":
-    print "len: " + str(len(sys.argv))
     if (len(sys.argv) < 4):
 	printUsage()
     local_player = sys.argv[1]

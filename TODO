@@ -5,7 +5,7 @@ TODO
 [Roadmap for Releases]
 
 1.0
-* gui screen: waiting for ready
+* gui screen: waiting for ready **TESTING**
 * check for remote player before switch to ready status
 * fix exit event from gui
 * fix situation for '433 Nickname is already in use'

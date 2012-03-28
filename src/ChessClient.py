@@ -34,7 +34,7 @@ class ChessClient(Thread):
 	turn = chess.getTurn()
 
         screen = pygame.display.set_mode((480, 480),1)
-        pygame.display.set_caption('ChessBoard Client')
+        pygame.display.set_caption('irchess')
 
         # load all images
         pieces = [{},{}]
@@ -75,11 +75,42 @@ class ChessClient(Thread):
         gameResults = ["","WHITE WINS!","BLACK WINS!","STALEMATE",
 	"DRAW BY THE FIFTHY MOVES RULE","DRAW BY THE THREE REPETITION RULE"]
 
-	# wait until ready
+	# waiting loop
+	waiting_message = 'connecting to server, please wait...'
 	while 1:
 	    clock.tick(30)
+
+	    # exit when player be ready
 	    if (self.irchess.ready == 1): break
 
+	    # search for gui events
+	    for event in pygame.event.get():
+		if event.type == QUIT:
+		    self.irchess.close()
+		    return
+
+	    # show waiting screen
+	    # - create some fonts
+	    font1 = pygame.font.Font(None, 40)
+	    font2 = pygame.font.Font(None, 20)
+	    # - render text
+	    text1 = font1.render('irchess', True, (255,255, 255), (0, 0, 0))
+	    text2 = font2.render(waiting_message, True, (122,122,122), (0,0,0))
+	    # - make rectangles
+	    rect1 = text1.get_rect()
+	    rect2 = text2.get_rect()
+	    # - position rectangles
+	    rect1.centerx = screen.get_rect().centerx
+	    rect1.centery = screen.get_rect().centery - 10
+	    rect2.centerx = screen.get_rect().centerx
+	    rect2.centery = screen.get_rect().centery + 20
+	    # - blit text
+	    screen.blit(text1, rect1)
+	    screen.blit(text2, rect2)
+	    # - update screen
+	    pygame.display.update()
+
+	# game loop
         while 1:
             clock.tick(30)
 
@@ -95,6 +126,7 @@ class ChessClient(Thread):
 		    markPos[0] = -1
 		    validMoves = []
 
+	    # search for gui events
             for event in pygame.event.get():
 		if event.type == QUIT:
 		    self.irchess.close()

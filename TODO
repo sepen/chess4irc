@@ -5,3 +5,4 @@ TODO
 * gui screen: waiting for ready
 * check for remote player before switch to ready status
 * fix exit event from gui
+* fix situation for '433 Nickname is already in use'

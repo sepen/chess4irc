@@ -10,6 +10,8 @@ class ChessClient(Thread):
 
     irchess = None
     debug = 0
+    selectedturn = 0 # WHITE pieces selected
+    remote_text_move = ""
 
     def __init__(self, irchess):
 	self.irchess = irchess
@@ -66,15 +68,30 @@ class ChessClient(Thread):
         markPos = [-1,-1]
         validMoves = []
 
-        gameResults = ["","WHITE WINS!","BLACK WINS!","STALEMATE","DRAW BY THE FIFTHY MOVES RULE","DRAW BY THE THREE REPETITION RULE"]
+        gameResults = ["","WHITE WINS!","BLACK WINS!","STALEMATE",
+	"DRAW BY THE FIFTHY MOVES RULE","DRAW BY THE THREE REPETITION RULE"]
 
         while 1:
             clock.tick(30)
+
+	    # if remote turn and remote move is not empty
+	    if self.selectedturn != turn and self.remote_text_move != "":
+		self.print_debug("remote move: " + self.remote_text_move)
+		res = chess.addTextMove(self.remote_text_move)
+		if res:
+		    self.print_debug("added remote move, res: " + str(res))
+		    board = chess.getBoard()
+		    turn = chess.getTurn()
+		    self.remote_text_move = ""
+		    markPos[0] = -1
+		    validMoves = []
+
             for event in pygame.event.get():
 		if event.type == QUIT:
 		    self.irchess.close()
 		    return
-		elif event.type == KEYDOWN:
+		    '''
+		    elif event.type == KEYDOWN:
 		    if event.key == K_ESCAPE:
 			return
 		    elif event.key == K_LEFT:
@@ -99,40 +116,53 @@ class ChessClient(Thread):
                     turn = chess.getTurn()
                     markPos[0] = -1
                     validMoves = []
-
+		    '''
                 if not chess.isGameOver():
-                    if event.type == MOUSEMOTION:
-                        mx = event.pos[0]
-                        my = event.pos[1]
-                        mousePos[0] = mx/60
-                        mousePos[1] = my/60
-                    elif event.type == MOUSEBUTTONDOWN:
-                        if mousePos[0] != -1:
-                            if markPos[0] == mousePos[0] and markPos[1] == mousePos[1]:
-                                markPos[0] = -1
-                                validMoves = []
-                            else:
-                                if (turn==ChessBoard.WHITE and board[mousePos[1]][mousePos[0]].isupper()) or \
-                                   (turn==ChessBoard.BLACK and board[mousePos[1]][mousePos[0]].islower()):
-                                    markPos[0] = mousePos[0]
-                                    markPos[1] = mousePos[1]
-                                    validMoves = chess.getValidMoves(tuple(markPos))
+		    # local turn
+		    if event.type == MOUSEMOTION:
+			mx = event.pos[0]
+			my = event.pos[1]
+			mousePos[0] = mx/60
+			mousePos[1] = my/60
+		    elif event.type == MOUSEBUTTONDOWN:
+			if mousePos[0] != -1:
+			    if markPos[0] == mousePos[0] and markPos[1] == mousePos[1]:
+				markPos[0] = -1
+				validMoves = []
+			    else:
+				# blancas
+				#if (turn==ChessBoard.WHITE and board[mousePos[1]][mousePos[0]].isupper()):
+				#    print "turn: " + str(turn) + " | ChessBoard.WHITE: " + str(ChessBoard.WHITE)
+				#    print "pos (is upper?): " + str(board[mousePos[1]][mousePos[0]])
+				# negras
+				#elif (turn==ChessBoard.BLACK and board[mousePos[1]][mousePos[0]].islower()):
+				#    print "turn: " + str(turn) + " | ChessBoard.BLACK: " + str(ChessBoard.BLACK)
+				#    print "pos (is lower?): " + str(board[mousePos[1]][mousePos[0]])
 
-                                else:
-                                    if markPos[0] != -1:
-                                        res = chess.addMove(markPos,mousePos)
-                                        if not res and chess.getReason() == chess.MUST_SET_PROMOTION:
-                                            chess.setPromotion(chess.QUEEN)
-                                            res = chess.addMove(markPos,mousePos)
-                                        if res:
-                                            #print chess.getLastMove()
+				# get valid moves
+				if (turn==ChessBoard.WHITE and board[mousePos[1]][mousePos[0]].isupper()) or \
+				   (turn==ChessBoard.BLACK and board[mousePos[1]][mousePos[0]].islower()):
+				    markPos[0] = mousePos[0]
+				    markPos[1] = mousePos[1]
+				    validMoves = chess.getValidMoves(tuple(markPos))
+				# move it
+				else:
+				    if markPos[0] != -1:
+					res = chess.addMove(markPos,mousePos)
+					if not res and chess.getReason() == chess.MUST_SET_PROMOTION:
+					    chess.setPromotion(chess.QUEEN)
+					    res = chess.addMove(markPos,mousePos)
+					if res:
+					    #print chess.getLastMove()
 					    msg = chess.getLastTextMove(chess.SAN)
-					    print msg
+					    self.print_debug("move: " + msg)
 					    self.irchess.irc.privmsg("#irchess", msg)
-                                            board = chess.getBoard()
-                                            turn = chess.getTurn()
-                                            markPos[0] = -1
-                                            validMoves = []
+					    board = chess.getBoard()
+					    turn = chess.getTurn()
+					    # moved
+					    self.print_debug("new turn: " + str(turn))
+					    markPos[0] = -1
+					    validMoves = []
 
             if chess.isGameOver():
                 pygame.display.set_caption("Game Over! (Reason:%s)" % gameResults[chess.getGameResult()])
@@ -140,7 +170,7 @@ class ChessClient(Thread):
                 markPos[0] = -1
                 markPos[1] = -1
             else:
-                pygame.display.set_caption('ChessBoard Client') 
+                pygame.display.set_caption('irchess')
 
             y = 0
             for rank in board:
@@ -161,4 +191,11 @@ class ChessClient(Thread):
                 pygame.draw.rect(screen, (255,255,0),posRect, 4)
 
             pygame.display.flip()
+
+    ####################
+    ## MISC FUNCTIONS ##
+    ####################
+
+    def print_debug(self, line = ""):
+	if (self.debug == 1): print "[ChessClient] " + str(line)
 

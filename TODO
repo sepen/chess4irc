@@ -1,0 +1,7 @@
+
+TODO
+
+* chessboard for black player
+* gui screen: waiting for ready
+* check for remote player before switch to ready status
+* fix exit event from gui

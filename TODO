@@ -1,8 +1,26 @@
 
 TODO
 
-* chessboard for black player
+
+[Roadmap for Releases]
+
+1.0
 * gui screen: waiting for ready
 * check for remote player before switch to ready status
 * fix exit event from gui
 * fix situation for '433 Nickname is already in use'
+* add license file, write documentation, etc.
+
+1.1
+* fixes for features released in 1.0
+* chessboard for black player
+* skins support
+
+1.2
+1.3
+...
+
+2.0
+* write irchess-cli
+* add Makefile options to build only irchess-cli, irchess or both
+

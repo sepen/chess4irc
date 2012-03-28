@@ -991,7 +991,8 @@ class ChessBoard:
 
     def redo(self):
         """
-        If you used the undo method to step backwards you can use this method to step forward until the last move i reached.
+        If you used the undo method to step backwards you can use this method to
+        step forward until the last move i reached.
         Returns True or False if no more moves can be redone.
         """
         if self._state_stack_pointer == len(self._state_stack):
@@ -1037,7 +1038,9 @@ class ChessBoard:
     def getGameResult(self):
         """
         Returns the reason for game over. 
-        It can be the following reasons: 1=WHITE_WIN , 2=BLACK_WIN, 3=STALEMATE,4=FIFTY_MOVES_RULE,5=THREE_REPETITION_RULE. 
+        It can be the following reasons:
+        1=WHITE_WIN, 2=BLACK_WIN, 3=STALEMATE,
+        4=FIFTY_MOVES_RULE,5=THREE_REPETITION_RULE. 
         If game is not over this method returns zero(0).
         """
         return self._game_result
@@ -1059,13 +1062,15 @@ class ChessBoard:
     def getReason(self):
         """
         Returns the reason to why addMove returned False.
-        1=INAVLID_MOVE,2=INVALID_COLOR,3=INVALID_FROM_LOCATION,4=INVALID_TO_LOCATION,5=MUST_SET_PROMOTION,5=GAME_IS_OVER
+        1=INVALID_MOVE, 2=INVALID_COLOR, 3=INVALID_FROM_LOCATION
+        4=INVALID_TO_LOCATION, 5=MUST_SET_PROMOTION, 5=GAME_IS_OVER
         """
         return self._reason
             
     def getValidMoves(self,location):
         """
-        Returns a list of valid moves. (ex [ [3,4],[3,5],[3,6] ... ] ) If there isn't a valid piece on that location or the piece on the selected 
+        Returns a list of valid moves. (ex [ [3,4],[3,5],[3,6] ... ] )
+        If there isn't a valid piece on that location or the piece on the selected
         location hasn't got any valid moves an empty list is returned.
         The location argument must be a tuple containing an x,y value Ex. (3,3)
         """
@@ -1103,7 +1108,8 @@ class ChessBoard:
 
     def addMove(self,fromPos,toPos):
         """
-        Tries to move the piece located om fromPos to toPos. Returns True if that was a valid move.
+        Tries to move the piece located om fromPos to toPos.
+        Returns True if that was a valid move.
         The position arguments must be tuples containing x,y value Ex. (4,6).
         This method also detects game over.
         

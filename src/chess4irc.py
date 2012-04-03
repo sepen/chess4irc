@@ -3,8 +3,7 @@
 from IRCClient import IRCClient
 from ChessClient import ChessClient
 from ChessBoard import ChessBoard
-import asyncore
-import sys
+import asyncore, thread, sys
 
 class chess4irc:
 
@@ -57,5 +56,5 @@ if __name__ == "__main__":
     white_or_black = sys.argv[3]
     try:
 	chess4irc(local_player, remote_player, white_or_black)
-    except (asyncore.ExitNow, KeyboardInterrupt, SystemExit):
+    except (asyncore.ExitNow, thread.error, KeyboardInterrupt, SystemExit):
 	sys.exit()

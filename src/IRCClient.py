@@ -6,7 +6,7 @@ from socket import AF_INET, SOCK_STREAM
 class IRCClient(async_chat):
 
     chess4irc = None
-    debug = 1
+    debug = 0
     terminator = '\r\n'
 
     def __init__(self, chess4irc, host, port, nickname, username, channels=None):

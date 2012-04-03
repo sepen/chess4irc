@@ -28,6 +28,7 @@ class IRCClient(async_chat):
 
     def _connection_made(self):
         self.print_debug('_connection_made: <nothing to do>')
+	self.chess4irc.status = "Identified with Nickname: " + self.nickname
         for channel in self.channels:
             self.send_data('JOIN %(chan)s' % {'chan': channel})
         self.on_connection()
@@ -44,11 +45,7 @@ class IRCClient(async_chat):
         self.push(data)
 
     def handle_connect(self):
-        self.send_data('NICK :%(nick)s' % {'nick': self.nickname})
-        self.send_data('USER %(nick)s %(nick)s %(nick)s :%(user)s' % {
-            'nick': self.nickname,
-            'user': self.username,
-        })
+	self.identify()
 
     def handle_close(self):
 	self.close()
@@ -60,13 +57,17 @@ class IRCClient(async_chat):
         self.print_debug('handle_data: ' + str(data))
         token = data.split()
 
-	if (token[0] == 'PING'):
+	if (token[0] == 'ERROR'):
+	    self.chess4irc.quit()
+
+	elif (token[0] == 'PING'):
 	    self.on_ping(token[1])
+
 	else:
 	    src = token[0]
 	    cmd = token[1]
 	    dst = token[2]
-	    self.print_debug('len(token): ' + str(len(token)))
+	    #self.print_debug('len(token): ' + str(len(token)))
 	    if (len(token) > 2):
 		msg = ' '.join(token[3:]).lstrip(':')
 	    else:
@@ -75,12 +76,22 @@ class IRCClient(async_chat):
 	    if (cmd == '376'):
 		self._connection_made()
 
+	    # End of /NAMES list
 	    elif (cmd == '366'):
 		self.chess4irc.ready = 1
 
-	    #elif (token[1] == '433'):
-	    # TODO :server.domain 433 * botijo :Nickname is already in use.
-	    
+	    # Erroneous Nickname
+	    elif (cmd == '432'):
+		self.chess4irc.status = "Erroneous Nickname. Trying random one ..."
+		self.chess4irc.status_changed = 1
+		self.try_random_nick()
+
+	    # Nickname is already in use
+	    elif (token[1] == '433'):
+		self.chess4irc.status = "Nickname in use. Trying random one ..."
+		self.chess4irc.status_changed = 1
+		self.try_random_nick()
+
 	    elif (cmd == 'PRIVMSG'):
 		self.on_privmsg(src, dst, msg)
     
@@ -107,9 +118,14 @@ class IRCClient(async_chat):
     ## IRC COMMANDS METHODS ##
     ##########################
 
-    def set_nick(self, new_nick):
-        self.nickname = new_nick
-        self.send_data('NICK %(nick)s' % {'nick': new_nick})
+    def set_nick(self):
+        self.send_data('NICK %(nick)s' % {'nick': self.nickname})
+
+    def set_user(self):
+	self.send_data('USER %(nick)s %(nick)s %(nick)s :%(user)s' % {
+            'nick': self.nickname,
+            'user': self.username,
+        })
 
     def privmsg(self, dst, msg, color=None):
         self.send_data('PRIVMSG %(dst)s :%(msg)s' % {
@@ -122,6 +138,10 @@ class IRCClient(async_chat):
             'dst': dst,
             'msg': msg,
         })
+
+    def identify(self):
+	self.set_nick()
+	self.set_user()
 
     def join(self, *dst):
         for channel in dst:
@@ -185,6 +205,15 @@ class IRCClient(async_chat):
     ####################
     ## MISC FUNCTIONS ##
     ####################
+
+    def try_random_nick(self):
+	# max length should be 15 chars
+	import random
+	suffixes = ["player", "king", "hacker", "queen", "newbie", "alien", "freak"]
+	self.nickname = "ch4irc_" + (random.choice(suffixes))
+	self.username = self.nickname
+	self.print_debug("trying random nick: " + self.nickname)
+	self.identify()
 
     def print_debug(self, line = ""):
 	if (self.debug == 1): print "[IRCClient] " + str(line)

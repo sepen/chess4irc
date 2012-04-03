@@ -76,13 +76,29 @@ class ChessClient(Thread):
         gameResults = ["","WHITE WINS!","BLACK WINS!","STALEMATE",
 	"DRAW BY THE FIFTHY MOVES RULE","DRAW BY THE THREE REPETITION RULE"]
 
+	# show init screen
+	# - create some fonts
+	font1 = pygame.font.Font(None, 40)
+	# - render text
+	text1 = font1.render('chess4irc', True, (255,255, 255), (0, 0, 0))
+	# - make rectangles
+	rect1 = text1.get_rect()
+	# - position rectangles
+	rect1.centerx = screen.get_rect().centerx
+	rect1.centery = screen.get_rect().centery - 30
+	# - blit text
+	screen.blit(text1, rect1)
+	# - update screen
+	pygame.display.update()
+
 	# waiting loop
-	waiting_message = 'connecting to server, please wait...'
+	self.chess4irc.status = 'connecting to server, please wait...'
+	margin = 20
 	while not self.exitnow:
 	    # exit when player be ready
 	    if (self.chess4irc.ready == 1): break
 
-	    clock.tick(30)
+	    clock.tick(10)
 
 	    # search for gui events
 	    for event in pygame.event.get():
@@ -91,26 +107,19 @@ class ChessClient(Thread):
 		    time.sleep(1)
 		    return
 
-	    # show waiting screen
-	    # - create some fonts
-	    font1 = pygame.font.Font(None, 40)
-	    font2 = pygame.font.Font(None, 20)
-	    # - render text
-	    text1 = font1.render('chess4irc', True, (255,255, 255), (0, 0, 0))
-	    text2 = font2.render(waiting_message, True, (122,122,122), (0,0,0))
-	    # - make rectangles
-	    rect1 = text1.get_rect()
-	    rect2 = text2.get_rect()
-	    # - position rectangles
-	    rect1.centerx = screen.get_rect().centerx
-	    rect1.centery = screen.get_rect().centery - 10
-	    rect2.centerx = screen.get_rect().centerx
-	    rect2.centery = screen.get_rect().centery + 20
-	    # - blit text
-	    screen.blit(text1, rect1)
-	    screen.blit(text2, rect2)
-	    # - update screen
-	    pygame.display.update()
+	    # refresh screen with new status message from irc client
+	    if (self.chess4irc.status_changed == 1):
+		# update status
+		self.chess4irc.status_changed = 0
+		# update screen
+		font2 = pygame.font.Font(None, 20)
+		text2 = font2.render(self.chess4irc.status, True, (122,122,122), (0,0,0))
+		rect2 = text2.get_rect()
+		rect2.centerx = screen.get_rect().centerx
+		rect2.centery = screen.get_rect().centery + margin
+		screen.blit(text2, rect2)
+		pygame.display.update()
+		margin += 14
 
 	# game loop
         while not self.exitnow:

@@ -8,13 +8,14 @@ import asyncore, thread, sys
 class chess4irc:
 
     # self vars
-    ready = None
+    ready, status, statuschanged = None, None, None
     lplayer, rplayer = None, None
     # self objects
     irc, gui = None, None
 
     def __init__(self, lplayer, rplayer, wb):
 	self.ready = 0
+	self.status, self.status_changed = '', 1
 	self.lplayer, self.rplayer = lplayer, rplayer
 	host, port = 'irc.freenode.org', 6667
 	nick = username = lplayer

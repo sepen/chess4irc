@@ -6,11 +6,12 @@ from socket import AF_INET, SOCK_STREAM
 class IRCClient(async_chat):
 
     chess4irc = None
-    debug = 0
+    debug = 1
     terminator = '\r\n'
 
     def __init__(self, chess4irc, host, port, nickname, username, channels=None):
         async_chat.__init__(self)
+	self.shutdown = 0
         self.chess4irc = chess4irc
         self.host = host
         self.port = port
@@ -23,7 +24,7 @@ class IRCClient(async_chat):
 	    'port': port
 	})
         self.create_socket(AF_INET, SOCK_STREAM)
-        self.connect((host, port))
+	self.connect((host, port))
 
     def _connection_made(self):
         self.print_debug('_connection_made: <nothing to do>')
@@ -48,6 +49,12 @@ class IRCClient(async_chat):
             'nick': self.nickname,
             'user': self.username,
         })
+
+    def handle_close(self):
+	self.close()
+
+    def handle_expt():
+	self.close()
 
     def handle_data(self, data):
         self.print_debug('handle_data: ' + str(data))
@@ -127,10 +134,12 @@ class IRCClient(async_chat):
         self.send_data(data)
 
     def quit(self, msg=None):
-        data = 'QUIT'
-        if msg is not None:
-            data += ' :%(msg)s' % {'msg': msg}
-        self.send_data(data)
+	if self.chess4irc.ready == 1:
+	    data = 'QUIT'
+	    if msg is not None:
+		data += ' :%(msg)s' % {'msg': msg}
+		self.send_data(data)
+	self.close_when_done()
 
     def on_ping(self, ping_id):
         self.send_data('PONG %(id)s' % {'id': ping_id})

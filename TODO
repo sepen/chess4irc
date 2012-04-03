@@ -7,7 +7,7 @@ TODO
 1.0
 * gui screen: waiting for ready **TESTING**
 * check for remote player before switch to ready status
-* fix exit event from gui
+* fix exit event from gui and from terminal **TESTING**
 * fix situation for '433 Nickname is already in use'
 * add license file, write documentation, etc.
 

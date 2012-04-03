@@ -1,7 +1,7 @@
 #/usr/bin/env python
 
 from ChessBoard import ChessBoard
-import os, pygame,math
+import os, time, pygame, math
 from pygame.locals import *
 from pprint import pprint
 from threading import Thread
@@ -12,6 +12,7 @@ class ChessClient(Thread):
     debug = 0
     selected_turn = 0 # 0=white, 1=black
     remote_text_move = ""
+    exitnow = 0
 
     def __init__(self, chess4irc, wb):
 	self.chess4irc = chess4irc
@@ -21,7 +22,7 @@ class ChessClient(Thread):
 	    self.selected_turn = 1
 	Thread.__init__(self)
 
-    def close(self):
+    def quit(self):
 	pygame.quit()
 	self._Thread__stop()
 
@@ -77,16 +78,17 @@ class ChessClient(Thread):
 
 	# waiting loop
 	waiting_message = 'connecting to server, please wait...'
-	while 1:
-	    clock.tick(30)
-
+	while not self.exitnow:
 	    # exit when player be ready
 	    if (self.chess4irc.ready == 1): break
+
+	    clock.tick(30)
 
 	    # search for gui events
 	    for event in pygame.event.get():
 		if event.type == QUIT:
-		    self.chess4irc.close()
+		    self.chess4irc.quit()
+		    time.sleep(1)
 		    return
 
 	    # show waiting screen
@@ -111,7 +113,7 @@ class ChessClient(Thread):
 	    pygame.display.update()
 
 	# game loop
-        while 1:
+        while not self.exitnow:
             clock.tick(30)
 
 	    # if remote turn and remote move is not empty
@@ -129,7 +131,9 @@ class ChessClient(Thread):
 	    # search for gui events
             for event in pygame.event.get():
 		if event.type == QUIT:
-		    self.chess4irc.close()
+		    self.exitnow = 1
+		    self.chess4irc.quit()
+		    time.sleep(5)
 		    return
 		    '''
 		    elif event.type == KEYDOWN:

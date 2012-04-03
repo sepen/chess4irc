@@ -45,7 +45,8 @@ class IRCClient(async_chat):
         self.push(data)
 
     def handle_connect(self):
-	self.identify()
+	self.set_nick()
+	self.set_user()
 
     def handle_close(self):
 	self.close()
@@ -139,10 +140,6 @@ class IRCClient(async_chat):
             'msg': msg,
         })
 
-    def identify(self):
-	self.set_nick()
-	self.set_user()
-
     def join(self, *dst):
         for channel in dst:
             self.send_data('JOIN %(dst)s' % {'dst': channel})
@@ -213,7 +210,8 @@ class IRCClient(async_chat):
 	self.nickname = "ch4irc_" + (random.choice(suffixes))
 	self.username = self.nickname
 	self.print_debug("trying random nick: " + self.nickname)
-	self.identify()
+	self.set_nick()
+	self.set_user()
 
     def print_debug(self, line = ""):
 	if (self.debug == 1): print "[IRCClient] " + str(line)

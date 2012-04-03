@@ -20,13 +20,19 @@ for driver in drivers:
     found = True
     # display results
     pygame.init()
+    screen = pygame.display.set_mode((480, 480),1)
     font1 = pygame.font.Font(None, 40)
     text1 = font1.render("Driver: " + format(driver), True, (255,255, 255), (0, 0, 0))
     rect1 = text1.get_rect()
-    screen = pygame.display.set_mode((480, 480),1)
     rect1.centerx = screen.get_rect().centerx
     rect1.centery = screen.get_rect().centery
+    font2 = pygame.font.Font(None, 20)
+    text2 = font2.render("pygame.image.get_extended: " + str(pygame.image.get_extended()), True, (123,123,123), (0, 0, 0))
+    rect2 = text2.get_rect()
+    rect2.centerx = screen.get_rect().centerx
+    rect2.centery = screen.get_rect().centery + 20
     screen.blit(text1, rect1)
+    screen.blit(text2, rect2)
     pygame.display.update()
     time.sleep(3)
     pygame.display.quit()

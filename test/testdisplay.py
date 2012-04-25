@@ -1,4 +1,4 @@
-import os, sys, pygame, time
+import pygame, time, os, sys
 from pygame.locals import *
 
 drivers = [
@@ -24,7 +24,7 @@ for driver in drivers:
     pygame.init()
     pygame.display.init()
     # set up the pygame window
-    screen = pygame.display.set_mode((480,480))
+    screen = pygame.display.set_mode((640,480),0)
     #screen = pygame.display.set_mode((480, 480),1)
     font1 = pygame.font.Font(None, 40)
     text1 = font1.render("Driver: " + format(driver), True, (255,255, 255), (0, 0, 0))
@@ -39,7 +39,7 @@ for driver in drivers:
     screen.blit(text1, rect1)
     screen.blit(text2, rect2)
     image1 = pygame.image.load("image.png")
-    screen.blit(image1, (212,300))
+    screen.blit(image1, (290,300))
     pygame.display.update()
     time.sleep(2)
     pygame.display.quit()

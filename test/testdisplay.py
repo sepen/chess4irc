@@ -18,9 +18,12 @@ for driver in drivers:
         print 'Driver: {0} failed.'.format(driver)
         continue
     found = True
-    # display results
+
+    os.environ["SDL_VIDEO_CENTERED"] = "1"
     pygame.init()
-    screen = pygame.display.set_mode((480, 480),1)
+    # set up the pygame window
+    screen = pygame.display.set_mode((480,480))
+    #screen = pygame.display.set_mode((480, 480),1)
     font1 = pygame.font.Font(None, 40)
     text1 = font1.render("Driver: " + format(driver), True, (255,255, 255), (0, 0, 0))
     rect1 = text1.get_rect()
@@ -33,8 +36,10 @@ for driver in drivers:
     rect2.centery = screen.get_rect().centery + 20
     screen.blit(text1, rect1)
     screen.blit(text2, rect2)
+    image1 = pygame.image.load("image.png")
+    screen.blit(image1, (212,300))
     pygame.display.update()
-    time.sleep(3)
+    time.sleep(2)
     pygame.display.quit()
     pygame.quit()
     break

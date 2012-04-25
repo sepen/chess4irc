@@ -6,18 +6,23 @@ TODO
 
 1.0
 * gui screen: waiting for ready **TESTING**
-* check for remote player before switch to ready status
+* handle when there is no remote player
 * fix exit event from gui and from terminal **TESTING**
 * fix situation for '433 Nickname is already in use' **TESTING**
 * fix situation for '432' Erroneous Nickname' **TESTING**
 * add license file, write documentation, etc.
+* cleanup
 
 1.1
 * fixes for features released in 1.0
-* chessboard for black player
-* skins support
+* new features:
+  * chessboard for black player
+  * themes support
+  * avoid both user to use same colour pieces
 
 1.2
+* fixes for features released in 1.1
+
 1.3
 ...
 

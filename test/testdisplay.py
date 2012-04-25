@@ -1,4 +1,5 @@
 import os, sys, pygame, time
+from pygame.locals import *
 
 drivers = [
 	# unix
@@ -21,6 +22,7 @@ for driver in drivers:
 
     os.environ["SDL_VIDEO_CENTERED"] = "1"
     pygame.init()
+    pygame.display.init()
     # set up the pygame window
     screen = pygame.display.set_mode((480,480))
     #screen = pygame.display.set_mode((480, 480),1)

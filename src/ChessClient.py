@@ -1,4 +1,4 @@
-# /usr/bin/env python3
+#!/usr/bin/env python3
 
 import pygame
 import time
@@ -177,8 +177,8 @@ class ChessClient(Thread):
                     if event.type == MOUSEMOTION:
                         mx = event.pos[0]
                         my = event.pos[1]
-                        mousePos[0] = mx / 60
-                        mousePos[1] = my / 60
+                        mousePos[0] = int(mx / 60)
+                        mousePos[1] = int(my / 60)
                     elif event.type == MOUSEBUTTONDOWN:
                         if mousePos[0] != -1:
                             if markPos[0] == mousePos[0] and markPos[1] == mousePos[1]:

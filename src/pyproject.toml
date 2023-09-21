@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "chess4irc"
+version = "0.1"
+description = "Chess for IRC"
+authors = ["Jose Beneyto <sepen@crux.nu>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+pygame = "^2.4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

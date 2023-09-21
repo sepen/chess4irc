@@ -2,6 +2,11 @@
 
 `chess4irc` is a chess board game written in PyGame which uses IRC protocol to send/receive data.
 
+![Last Commit](https://img.shields.io/github/last-commit/sepen/chess4irc)
+![Repo Size](https://img.shields.io/github/repo-size/sepen/chess4irc)
+![Code Size](https://img.shields.io/github/languages/code-size/sepen/chess4irc)
+![Written in Python](https://img.shields.io/badge/written%20in-python-ff69b4)
+
 The application consists of a basic chess board, where each piece movement of the game is sent to the opponent through the IRC protocol.
 
 The [asynchat](https://docs.python.org/3/library/asynchat.html) module is used to implement the IRC client and the graphical part is written with [PyGame](https://www.pygame.org/) as a programming exercise, so use at your own risk.

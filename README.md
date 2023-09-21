@@ -21,29 +21,39 @@ $ chess4irc <local_player> <remote_player> <white|black>
 
 ## Examples
 
-Player 1 (joe)
+We have two players: **bob** and **joe**.\
+Then each of them must start a board and indicate both his and his opponent's nickname and whether he wants to play with white or black.
+
+
+Player 1: **joe**
 ```
 $ chess4irc.py joe bob white
 ```
 
-Player 2 (bob)
+Player 2: **bob**
 ```
 $ chess4irc.py bob joe black
 ```
 
-## Run chess4irc from Docker image
+_NOTE: Since the player's name will be used as a nickname on the IRC server, it is necessary that this nickname belongs to us or is not in use._
 
-Build the image
+## Docker
+
+You can run chess4irc from a docker image.\
+This way avoids having to deal with the version of python installed on your machine or having to install the pygame libraries.\
+These are the steps:
+
+1. Build the image
 ```
 $ docker build -t chess4irc .
 ```
 
-Disable X server access control, clients can connect from any host
+2. Disable X server access control, clients can connect from any host
 ```
 $ xhost +
 ```
 
-Run with some additional arguments to use your X server. Sound is a requirement in PyGame even though chess4irc does not have sound
+3. Run with some additional arguments to use your X server. Sound is a requirement in PyGame even though chess4irc does not have sound
 ```
 $ docker run -it --rm \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
@@ -53,7 +63,7 @@ $ docker run -it --rm \
     chess4irc joe bob white
 ```
 
-## Chess Notation Cheat Sheet
+## Chess Notation CheatSheet
 
 `king = K`\
 `queen = Q`\

@@ -6,6 +6,8 @@ The application consists of a basic chess board, where each piece movement of th
 
 The [asynchat](https://docs.python.org/3/library/asynchat.html) module is used to implement the IRC client and the graphical part is written with [PyGame](https://www.pygame.org/) as a programming exercise, so use at your own risk.
 
+![Screenshot](screenshot.png?raw=true "chess4irc")
+
 
 ## Usage
 ```
